@@ -1,0 +1,11 @@
+{
+  "total_records": 3512,
+  "privacy_risk_count": 1211,
+  "crisis_risk_count": 101,
+  "privacy_risk_ratio": 0.3448,
+  "crisis_risk_ratio": 0.0288,
+  "notes": {
+    "privacy_risk_meaning": "It may containImmediate self-harm/other-harm/desperate language may occur. A security upgrade strategy is needed instead of a casual casual reply. sensitive information such as email addresses, phone numbers, contact details, and descriptions of mental health diagnoses.",
+    "crisis_risk_meaning": "Immediate self-harm/other-harm/desperate language may occur. A security upgrade strategy is needed instead of a casual casual reply."
+  }
+}
