@@ -1,1 +1,29 @@
-
+[
+  {
+    "user_id": "demo_001",
+    "text": "I feel really overwhelmed with school and life lately. I don't know who to talk to.",
+    "context": "academic_stress",
+    "labels": {
+      "empathy_level": "high",
+      "risk_level": "low"
+    }
+  },
+  {
+    "user_id": "demo_002",
+    "text": "Sometimes I feel like nothing will ever get better. I just want to disappear.",
+    "context": "depressive_thoughts",
+    "labels": {
+      "empathy_level": "very_high",
+      "risk_level": "medium"
+    }
+  },
+  {
+    "user_id": "demo_003",
+    "text": "I'm not in immediate danger, but I've been having scary thoughts more often.",
+    "context": "thoughts_of_self_harm",
+    "labels": {
+      "empathy_level": "high",
+      "risk_level": "high"
+    }
+  }
+]
