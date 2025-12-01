@@ -1,0 +1,196 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "id": 1,
+      "title": "Empathy Score Over Time",
+      "type": "timeseries",
+      "datasource": {
+        "type": "marcusolsson-json-datasource",
+        "uid": "JSON_API_DATASOURCE_UID"
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "query": "",
+          "parser": "backend",
+          "dataPath": "$",
+          "fields": [
+            {
+              "name": "time",
+              "jsonPath": "$[*].timestamp"
+            },
+            {
+              "name": "empathy_score",
+              "jsonPath": "$[*].empathy_score"
+            }
+          ]
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "displayName": "Empathy Score",
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      }
+    },
+    {
+      "id": 2,
+      "title": "Risk Level Distribution",
+      "type": "barchart",
+      "datasource": {
+        "type": "marcusolsson-json-datasource",
+        "uid": "JSON_API_DATASOURCE_UID"
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "query": "",
+          "parser": "backend",
+          "dataPath": "$",
+          "fields": [
+            {
+              "name": "risk_level",
+              "jsonPath": "$[*].risk_level"
+            }
+          ]
+        }
+      ],
+      "options": {
+        "orientation": "horizontal",
+        "legend": {
+          "displayMode": "list",
+          "placement": "right"
+        }
+      },
+      "fieldConfig": {
+        "defaults": {
+          "displayName": "Count",
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": []
+      }
+    },
+    {
+      "id": 3,
+      "title": "Recent EmpathiAI Interactions",
+      "type": "table",
+      "datasource": {
+        "type": "marcusolsson-json-datasource",
+        "uid": "JSON_API_DATASOURCE_UID"
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 9
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "query": "",
+          "parser": "backend",
+          "dataPath": "$",
+          "fields": [
+            {
+              "name": "timestamp",
+              "jsonPath": "$[*].timestamp"
+            },
+            {
+              "name": "input_text",
+              "jsonPath": "$[*].input_text"
+            },
+            {
+              "name": "model_response",
+              "jsonPath": "$[*].model_response"
+            },
+            {
+              "name": "empathy_score",
+              "jsonPath": "$[*].empathy_score"
+            },
+            {
+              "name": "risk_level",
+              "jsonPath": "$[*].risk_level"
+            }
+          ]
+        }
+      ],
+      "options": {
+        "showHeader": true
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto"
+          }
+        },
+        "overrides": []
+      }
+    }
+  ],
+  "refresh": "5s",
+  "schemaVersion": 38,
+  "style": "dark",
+  "tags": ["empathy", "mental-health", "monitoring"],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "EmpathiAI – Empathy & Risk Monitoring",
+  "uid": "empathiai-dashboard",
+  "version": 1,
+  "weekStart": ""
+}
