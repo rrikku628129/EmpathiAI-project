@@ -1,180 +1,152 @@
-EmpathiAI – An Empathetic Dialogue System for Mental-Health Support
-1. Project Overview
 
-EmpathiAI is an artificial intelligence system designed to provide empathetic dialogue responses in mental-health support contexts.
-The system generates empathetic responses to user text inputs and simultaneously performs multi-task predictions, including:
+# EmpathiAI: Conversational Mental Health Support System
 
-Empathy level classification
+**Goal:** Build a conversational AI system capable of recognizing empathy and generating safe, supportive, and personalized responses for mental-health contexts.
 
-Risk level estimation
+---
 
-Detection of crisis-related linguistic cues
+## Motivation
 
-Assessment of self-awareness indicators
+Mental-health care requires emotionally sensitive communication.  
+Traditional chatbots lack empathy and may produce unsafe or unhelpful responses.
 
-The system integrates multiple components, including a fine-tuned language model (e.g., RoBERTa / DeBERTa), structured diagnostic modeling via TabNet, and explainability through graph-based attention mechanisms (GNN/GAT).
-Human-in-the-loop mechanisms are incorporated to enhance empathy expression quality and ensure safe, reliable decision-making.
+This project aims to understand how AI-expressed empathy influences therapeutic outcomes by examining relationships among:
 
-This repository presents the full lifecycle of the system, including development, evaluation, documentation, and demonstration.
+- User emotional feedback
+- Clinical risk patterns
+- AI-generated empathetic responses
 
-2. Repository Structure
-EmpathiAI/
-│
-├── src/
-│   ├── main.py                     # System entry point
-│   ├── models/                     # Trained models or loading scripts
-│   ├── utils/                      # Preprocessing, inference, and metrics
-│   ├── data/                       # Sample input/output data
-│   ├── __init__.py
-│
-├── deployment/                     # Not used (placeholder)
-│   ├── Dockerfile
-│
-├── monitoring/                     # Not used (placeholder)
-│   ├── prometheus/
-│   ├── grafana/
-│
-├── documentation/
-│   ├── AI-System-Project-Proposal.pdf
-│   ├── Project-Report.pdf
-│   ├── README.md (optional)
-│
-├── notebooks/
-│   ├── model_development.ipynb
-│   ├── privacy_scan.ipynb
-│   ├── data_cleaning.ipynb
-│   ├── trustworthiness_checks.ipynb
-│
-├── videos/
-│   ├── system_demo.mp4
-│
-├── .gitignore
-├── requirements.txt
-└── README.md
+Ultimately, the system explores psychological and behavioral impacts of AI-assisted conversations.
 
-3. System Entry Point (src/main.py)
+---
 
-EmpathiAI can be executed locally through the system entry script.
+## System Overview
 
-Single-input mode:
-python src/main.py --text "I feel very stressed lately."
+EmpathiAI uses a hybrid architecture combining:
 
+- Empathy classification
+- Risk prediction
+- Safe dialogue generation
 
-This returns a structured output including:
+**System Pipeline:**
+```
+User Input → Preprocessing → Empathy Classifier → Safe Response Generator
+```
 
-Generated empathetic response
+---
 
-Empathy score
+## Methods
 
-Estimated risk level
+### **Models**
+1. **Baseline**
+   - TF-IDF + Logistic Regression
+2. **Main Model**
+   - RoBERTa-base
+   - Context + response concatenation for empathy learning
 
-Timestamped output automatically saved to src/data/sample_output.json
+### **Training**
+- Logistic Regression: Grid Search
+- RoBERTa:
+  - Optimizer: AdamW
+  - LR = 2e-5
+  - Batch = 8
+  - Epochs = 3–5
 
-Interactive mode:
-python src/main.py
+### **Preprocessing**
+- Text cleaning
+- RoBERTa tokenization
+- SMOTE oversampling for high-empathy class
+- Back-translation & synonym augmentation
 
+---
 
-Type exit or quit to terminate.
+## Dataset
 
-4. Demonstration Video
+Source: `tcabanski/mental_health_counseling_conversations_rated`
 
-A demonstration of the system’s execution, response generation, and evaluation workflow is provided at:
+### **Data Fields**
+| Column | Description |
+|---|---|
+| `context` | User input text |
+| `response` | Counselor reply |
+| `avg_empathy_score` | Empathy 1–5 |
+| `avg_appropriateness_score` | Appropriateness 1–5 |
+| `avg_relevance_score` | Relevance 1–5 |
 
-videos/system_demo.mp4
+Dataset contains human-rated conversational counseling pairs.
 
+---
 
-The video illustrates:
+## Evaluation
 
-Running the system using main.py
+To evaluate conversational quality, four LLMs were scored on:
 
-Generating empathetic responses
+- Empathy
+- Appropriateness
+- Relevance
+- Average Score
 
-Producing risk-related indicators
+### **Model Comparison Results**
+| Model          | Empathy | Appropriateness | Relevance | Average |
+|----------------|---------|-----------------|-----------|---------|
+| LLaMA3.1-8B    | 3.54    | 4.41            | 4.68      | 4.21    |
+| LLaMA3.2-3B    | 4.05    | 4.20            | 4.04      | 4.09    |
+| Qwen2.5-7B     | 3.01    | 4.04            | 3.67      | 3.57    |
+| LLaMA3.2-1B    | 3.19    | 3.25            | 3.95      | 3.46    |
 
-(If applicable) displaying explainability or human-in-the-loop rewriting steps
+### **Key Findings**
+- **LLaMA3.1-8B** achieved the highest overall performance (4.21), with strong balance across empathy, appropriateness, and relevance.
+- **LLaMA3.2-3B** performed consistently across dimensions (avg 4.09).
+- **Qwen2.5-7B** scored well in appropriateness (4.04) but underperformed in empathy & relevance.
+- **LLaMA3.2-1B** ranked last across all metrics.
 
-5. Deployment Strategy
+---
 
-This project is implemented as a local research prototype.
-Containerization (Docker/Kubernetes) is not used for this version because:
+## System Components (High-level)
 
-The system is not deployed as a persistent service
+```
+├── empathy_classifier/
+├── safe_generation/
+├── preprocessing/
+└── evaluation/
+```
 
-Real-time serving and API hosting are not required for the scope of the course
+---
 
-Local execution sufficiently demonstrates model functionality and workflow
+## Example Use Case
 
-The deployment/ folder is included as a placeholder for potential future extensions.
+> User expresses anxiety → System detects emotional context → Predicts empathy level → Generates safe and supportive response.
 
-6. Monitoring and Metrics
+---
 
-Prometheus and Grafana are not used in this project.
-The system does not operate as an online, continuously running service; therefore, real-time monitoring is not necessary.
+## Tech Stack
 
-Instead, all evaluation is performed offline through the included notebooks:
+- Python
+- PyTorch
+- Hugging Face Transformers
+- Scikit-learn
+- SMOTE
+- Back-translation augmentation
 
-Model performance
+---
 
-Calibration and reliability analysis
+## Future Directions
 
-Trustworthiness and fairness checks
+- Integrate clinical safety constraints
+- Expand multi-modal emotion signals (speech, facial expressions)
+- Fine-tune instruction-following models for therapy alignment
 
-Privacy and risk analysis
+---
 
-Relevant files are located in the notebooks/ directory.
+## Reference 
 
-7. Project Documentation
+This repository corresponds to the research poster:  
+“EmpathiAI: Conversational Mental Health Support System” :contentReference[oaicite:1]{index=1}
 
-All project documentation is provided in the documentation/ directory:
+---
 
-AI-System-Project-Proposal.pdf
+## Contact
 
-Project-Report.pdf (or placeholder if still under development)
+If you'd like to collaborate on empathetic AI, LLM safety, or mental-health HCI research, feel free to reach out.
 
-These documents describe the system goals, architecture, risk integration, evaluation, and design rationale.
 
-8. Version Control and Collaboration Practices
-
-This repository uses standard version control practices:
-
-Main branch contains the stable submission version.
-
-Development branch (if used) contains experimental or iterative updates.
-
-Commit messages record changes related to model development, data processing, risk analysis, and documentation.
-
-Large model checkpoints are excluded using .gitignore to maintain repository size.
-
-9. Components Not Used in This Project
-
-The following components are not included in this implementation:
-
-Containerization (Docker / Kubernetes)
-
-Not required for the project scope; execution is local.
-
-Monitoring stacks (Prometheus / Grafana)
-
-Not applicable because the system does not run as a live service.
-
-Multi-container orchestration
-
-Not needed due to the single-process nature of the prototype.
-
-10. Reproduction Instructions
-1. Clone the repository:
-git clone https://github.com/<your-username>/<your-repo>.git
-
-2. Install dependencies:
-pip install -r requirements.txt
-
-3. Run the system:
-python src/main.py --text "I feel sad and anxious recently."
-
-11. Acknowledgments
-
-This repository was created as part of
-Machine Learning for AI Systems — Final Project
-University of Florida, Fall 2025.
-
-The work reflects principles of trustworthy AI development, responsible risk integration, and human-centered model design.
